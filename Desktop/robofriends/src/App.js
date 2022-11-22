@@ -1,17 +1,28 @@
 import React, { Component } from "react";
-import "./App.css";
 import CardList from "./CardList";
-import { robots } from "./robots";
 import SearchBox from "./SearchBox";
+import "./App.css";
 
 class App extends Component {
   constructor() {
     super();
     //state can affect our app's description from parent to child (App -> components )
     this.state = {
-      robots: robots,
+      robots: [],
       SearchBox: "",
     };
+  }
+
+  //mounting functions, part of the react functions
+  //not am arrow function
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        return response.json();
+      })
+      .then((users) => {
+        this.setState({ robots: users });
+      });
   }
 
   onSearchChange = (event) => {
@@ -24,13 +35,18 @@ class App extends Component {
         .toLowerCase()
         .includes(this.state.SearchBox.toLowerCase());
     });
-    return (
-      <div>
-        <h1>Robot Friends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <CardList robots={filteredRobots} />
-      </div>
-    );
+
+    if (this.state.robots.length === 0) {
+      return <h1>Loading...</h1>;
+    } else {
+      return (
+        <div className="tc">
+          <h1 className="f1">Robot Friends</h1>
+          <SearchBox searchChange={this.onSearchChange} />
+          <CardList robots={filteredRobots} />
+        </div>
+      );
+    }
   }
 }
 
