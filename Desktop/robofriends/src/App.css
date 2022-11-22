@@ -7,11 +7,17 @@
   pointer-events: none;
 }
 
+@font-face {
+  font-family: "SEGA LOGO FONT";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SEGA LOGO FONT"), url("SEGA.woff") format("woff");
+}
+
 h1 {
-  font-weight: 500;
-  margin: 30px;
-  text-align: center;
-  padding: 10px;
+  font-family: "SEGA LOGO FONT";
+  font-weight: 200;
+  color: #0ccac4;
 }
 
 @media (prefers-reduced-motion: no-preference) {
