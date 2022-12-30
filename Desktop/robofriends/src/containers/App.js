@@ -1,57 +1,75 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import CardList from "../components /CardList";
 import SearchBox from "../components /SearchBox";
 import Scroll from "../components /Scroll.js";
 import ErrorBoundry from "../components /ErrorBoundry";
 import "./App.css";
 
-class App extends Component {
-  constructor() {
-    super();
-    //state can affect our app's description from parent to child (App -> components )
-    this.state = {
-      robots: [],
-      SearchBox: "",
-    };
-  }
+function App() {
+  //REACT HOOKS: STATE: useState returns to use the state
+  const [robots, setRobots] = useState([]);
+  const [searchBox, setSearchBox] = useState("");
 
-  //mounting functions, part of the react functions
-  //not am arrow function
-  componentDidMount() {
+  // constructor() {
+  //   super();
+  //   //state can affect our app's description from parent to child (App -> components )
+  //   this.state = {
+  //     robots: [],
+  //     SearchBox: "",
+  //   };
+  // }
+
+  //REACT HOOKS: EFFECT
+  //effect helps with lifecycle functions like component did mount
+  //ran everytime app is rendered
+  useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         return response.json();
       })
       .then((users) => {
-        this.setState({ robots: users });
+        setRobots(users); //we change the state of robots,
+        //so the use effects func will re-render the app the reflect the changes
+        // creates a loop
+        //set state -> render -> set state -< render
       });
-  }
+  }, []); //we only use effect when value changes (second param) to avoid looping of re-renders
+  // we give an empty array cuz the value will not change
 
-  onSearchChange = (event) => {
-    this.setState({ SearchBox: event.target.value });
+  //mounting functions, part of the react functions
+  //not am arrow function
+  // componentDidMount() {
+  //   fetch("https://jsonplaceholder.typicode.com/users")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((users) => {
+  //       this.setState({ robots: users });
+  //     });
+  // }
+
+  const onSearchChange = (event) => {
+    //using state function to set state
+    setSearchBox(event.target.value);
   };
 
-  render() {
-    const filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name
-        .toLowerCase()
-        .includes(this.state.SearchBox.toLowerCase());
-    });
+  const filteredRobots = robots.filter((robot) => {
+    return robot.name.toLowerCase().includes(searchBox.toLowerCase());
+  });
 
-    return !this.state.robots.length ? (
-      <h1>Loading...</h1>
-    ) : (
-      <div className="tc">
-        <h1 className="f1">Robot Friends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <Scroll>
-          <ErrorBoundry>
-            <CardList robots={filteredRobots} />
-          </ErrorBoundry>
-        </Scroll>
-      </div>
-    );
-  }
+  return !robots.length ? (
+    <h1>Loading...</h1>
+  ) : (
+    <div className="tc">
+      <h1 className="f1">Robot Friends</h1>
+      <SearchBox searchChange={onSearchChange} />
+      <Scroll>
+        <ErrorBoundry>
+          <CardList robots={filteredRobots} />
+        </ErrorBoundry>
+      </Scroll>
+    </div>
+  );
 }
 
 export default App;
