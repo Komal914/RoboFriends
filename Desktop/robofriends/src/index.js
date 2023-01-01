@@ -12,7 +12,11 @@ import App from "./containers/App.js";
 const store = configureStore({ reducer: searchRobots });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App store={store} />);
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
