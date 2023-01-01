@@ -22,6 +22,7 @@ function App() {
   //REACT HOOKS: EFFECT
   //effect helps with lifecycle functions like component did mount
   //ran everytime app is rendered
+
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
