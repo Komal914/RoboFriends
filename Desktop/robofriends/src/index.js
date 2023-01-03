@@ -2,20 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { combineReducers } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
-import { searchRobots } from "./reducers";
+import { searchRobots, requestRobots } from "./reducers";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import "tachyons";
 import App from "./containers/App.js";
 
-const reducer = {
-  reducer: searchRobots,
-};
+const rootReducer = combineReducers({ searchRobots, requestRobots });
+
 const logger = createLogger();
 const store = configureStore({
-  reducer: searchRobots,
+  reducer: rootReducer,
   middleware: [thunk, logger],
 });
 
