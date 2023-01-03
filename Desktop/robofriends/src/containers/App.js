@@ -32,7 +32,6 @@ class App extends Component {
     //state can affect our app's description from parent to child (App -> components )
     this.state = {
       robots: [],
-      SearchBox: "",
     };
   }
 
@@ -57,6 +56,7 @@ class App extends Component {
   //mounting functions, part of the react functions
   //not am arrow function
   componentDidMount() {
+    console.log("App props:", this.props);
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         return response.json();
